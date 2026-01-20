@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English 5 Speaking</title>
+
+<style>
+body{
+  font-family:"Comic Sans MS",Arial,sans-serif;
+  background:linear-gradient(135deg,#dbeeff,#ffffff);
+  margin:0;padding:14px
+}
+.container{
+  max-width:1000px;margin:auto;
+  background:#fff;padding:22px;
+  border-radius:26px;
+  box-shadow:0 12px 30px rgba(0,0,0,.25)
+}
+h1,h2{text-align:center;color:#0d47a1}
+.card{
+  background:#f5fbff;
+  padding:18px;margin-top:18px;
+  border-radius:22px;
+  border:3px dashed #90caf9
+}
+input,select,textarea{
+  width:100%;padding:12px;
+  border-radius:14px;
+  border:2px solid #bbdefb;
+  margin-top:8px;font-size:16px
+}
+button{
+  width:100%;padding:14px;margin-top:10px;
+  background:#1565c0;color:white;
+  border:none;border-radius:22px;
+  font-size:17px
+}
+button.recording{background:#d32f2f}
+.unit-title{
+  background:#ffeb3b;
+  padding:12px;border-radius:18px;
+  font-weight:bold;text-align:center
+}
+.word-good{
+  background:#c8e6c9;
+  padding:6px 10px;margin:6px;
+  border-radius:14px;
+  display:inline-block
+}
+.word-bad{
+  background:#ffccbc;
+  padding:6px 10px;margin:6px;
+  border-radius:14px;
+  display:inline-block
+}
+.word-good button,.word-bad button{
+  margin-left:6px;border:none;
+  border-radius:50%;background:#1565c0;color:white
+}
+.star{text-align:center;font-size:36px;margin-top:10px}
+.certificate{
+  display:none;margin-top:30px;
+  padding:40px;border-radius:30px;
+  background:linear-gradient(135deg,#fffde7,#fff);
+  border:8px double #fbc02d;
+  text-align:center
+}
+.cert-title{font-size:34px;color:#0d47a1}
+.cert-name{font-size:28px;font-weight:bold;margin:10px 0}
+.cert-text{font-size:18px;margin:12px}
+.sign{
+  display:flex;justify-content:center;
+  gap:80px;margin-top:30px;font-size:16px
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1>🎤 English 5 Speaking</h1>
+<h2>Speaking by Unit & Free Speaking</h2>
+
+<div class="card">
+  <input id="studentName" placeholder="Student name">
+  <input id="studentClass" placeholder="Class (5/3)">
+</div>
+
+<div class="card">
+  <select id="mode" onchange="switchMode()">
+    <option value="unit">Speaking by Unit</option>
+    <option value="free">Free Speaking</option>
+  </select>
+</div>
+
+<div class="card" id="unitBox">
+  <select id="unit"></select>
+  <div class="unit-title" id="unitTitle"></div>
+  <p id="sampleText"></p>
+  <button onclick="speak(sampleText.innerText)">🔊 Listen model</button>
+</div>
+
+<div class="card">
+  <textarea id="studentText" rows="5" placeholder="Tap mic and speak..."></textarea>
+  <button id="recordBtn" onclick="startSpeak()">🎙 Start speaking</button>
+</div>
+
+<div class="card">
+  <h3>🤖 AI Feedback</h3>
+  <div id="feedback"></div>
+  <div class="star" id="starBox"></div>
+</div>
+
+<div class="certificate" id="certificate">
+  <div class="cert-title">CERTIFICATE OF ENGLISH SPEAKING</div>
+  <p>This certificate is proudly presented to</p>
+  <div class="cert-name" id="cName"></div>
+  <p id="cClass"></p>
+  <p class="cert-text" id="cMode"></p>
+  <div id="cStar" class="star"></div>
+  <p class="cert-text">🌟 Keep practising English every day to become more confident!</p>
+  <div class="sign">
+    <div><b>Mrs Tran Thi Kim Yen</b></div>
+    <div><b>Mrs Pham Thi Ngoc Bich</b></div>
+  </div>
+</div>
+</div>
+
+<audio id="clap" src="https://www.soundjay.com/human/applause-8.mp3"></audio>
+
+<script>
+/* ===== MOBILE SAFE TTS ===== */
+let voiceReady=false;
+function initTTS(){
+  if(voiceReady) return;
+  speechSynthesis.getVoices();
+  voiceReady=true;
+}
+document.addEventListener("touchstart",initTTS,{once:true});
+document.addEventListener("click",initTTS,{once:true});
+
+function speak(text){
+  if(!text) return;
+  initTTS();
+  speechSynthesis.cancel();
+  setTimeout(()=>{
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang="en-GB";u.rate=0.85;
+    speechSynthesis.speak(u);
+  },120);
+}
+
+/* ===== UNITS 1–20 (2 LESSONS / UNIT) ===== */
+const units={
+1:["Unit 1: All about me","I’m Hoang. I’m in class 5/3. I live in the countryside. My favourite colour is yellow. My favourite animal is a dolphin. My favourite food is a sandwich. My favourite sport is table tennis."],
+2:["Unit 2: Our homes","I live in a house in the countryside. It is small but nice. My address is 65 Le Loi Street. It is near my school."],
+3:["Unit 3: My foreign friends","My friend is from Australia. He is friendly and helpful. We often play football together."],
+4:["Unit 4: Free-time activities","In my free time, I go for a walk and ride my bike. At the weekend, I read books."],
+5:["Unit 5: My future job","I would like to be a teacher because I like teaching children and helping them learn."],
+6:["Unit 6: Our school rooms","The computer room is on the second floor. Go upstairs and turn right."],
+7:["Unit 7: Favourite school activities","I like doing projects because it is interesting and useful."],
+8:["Unit 8: In our classroom","The board is in front of the class. The clock is above the door."],
+9:["Unit 9: Outdoor activities","Last weekend, we went camping and danced around the campfire."],
+10:["Unit 10: School trip","We visited Ba Na Hills and took many photos."],
+11:["Unit 11: Family time","Last Sunday, my family went to the beach together."],
+12:["Unit 12: Our Tet holiday","At Tet, we decorate the house and visit our relatives."],
+13:["Unit 13: Special days","On Children’s Day, we have fun and get lovely gifts."],
+14:["Unit 14: Staying healthy","I eat healthy food and exercise three times a week."],
+15:["Unit 15: Our health","I have a sore throat. I should drink warm water."],
+16:["Unit 16: Seasons","It is cloudy in autumn and cold in winter."],
+17:["Unit 17: Stories","The story is about a clever fox and a crow."],
+18:["Unit 18: Transport","I can get there by bus or by bike."],
+19:["Unit 19: Places","Hoi An Ancient Town is beautiful and peaceful."],
+20:["Unit 20: Summer holidays","This summer, I am going to visit Phu Quoc Island."]
+};
+
+for(let i=1;i<=20;i++){
+  unit.innerHTML+=`<option value="${i}">${units[i][0]}</option>`;
+}
+updateUnit();
+unit.onchange=updateUnit;
+
+function updateUnit(){
+  unitTitle.innerText=units[unit.value][0];
+  sampleText.innerText=units[unit.value][1];
+}
+
+/* ===== RECORD (PC + MOBILE) ===== */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let recog=new SR();
+recog.lang="en-GB";
+
+function startSpeak(){
+  recordBtn.classList.add("recording");
+  recordBtn.innerText="🎙 Listening...";
+  recog.start();
+}
+
+recog.onresult=e=>{
+  recordBtn.classList.remove("recording");
+  recordBtn.innerText="🎙 Start speaking";
+  const said=e.results[0][0].transcript;
+  studentText.value=said;
+  mode.value==="unit"?checkUnit(said):checkFree(said);
+};
+
+/* ===== UNIT FEEDBACK ===== */
+function checkUnit(said){
+  feedback.innerHTML="";
+  let model=sampleText.innerText.split(" ");
+  let spoken=said.split(" ");
+  let wrong=0;
+
+  model.forEach(w=>{
+    let span=document.createElement("span");
+    if(spoken.map(s=>s.toLowerCase()).includes(w.toLowerCase())){
+      span.className="word-good";
+    }else{
+      span.className="word-bad";
+      wrong++;
+    }
+    span.innerHTML=`${w} <button onclick="speak('${w}')">🔊</button>`;
+    feedback.appendChild(span);
+  });
+
+  score(wrong,model.length,"Unit "+unit.value);
+}
+
+/* ===== FREE SPEAKING ===== */
+function checkFree(said){
+  feedback.innerHTML="";
+  let words=said.split(" ");
+  let wrong=0;
+
+  words.forEach(w=>{
+    let span=document.createElement("span");
+    if(w.length<2){
+      span.className="word-good";
+    }else{
+      span.className="word-bad";
+      wrong++;
+    }
+    span.innerHTML=`${w} <button onclick="speak('${w}')">🔊</button>`;
+    feedback.appendChild(span);
+  });
+
+  score(wrong,words.length,"Free Speaking");
+}
+
+/* ===== SCORE + CERT ===== */
+function score(wrong,total,modeName){
+  let stars=wrong===0?5:wrong<=2?4:wrong<=4?3:wrong<=6?2:1;
+  starBox.innerText="⭐".repeat(stars);
+  clap.play();
+  showCert(stars,modeName);
+}
+
+function showCert(stars,modeName){
+  certificate.style.display="block";
+  cName.innerText=studentName.value;
+  cClass.innerText="Class: "+studentClass.value;
+  cMode.innerText="Achievement in "+modeName;
+  cStar.innerText="⭐".repeat(stars);
+}
+</script>
+</body>
+</html>
